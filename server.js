@@ -15,8 +15,9 @@ var http = require('http');
 /* var port = normalizePort(process.env.PORT || '3000');
  * 
  */
-var port = normalizePort(process.env.OPENSHIFT_NODEJS_PORT || '8080');
+var port = normalizePort(process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
 app.set('port', port);
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1' ;
 
 /**
  * Create HTTP server.
@@ -28,7 +29,7 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(port,server_ip_address);
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -88,7 +89,7 @@ function onListening() {
  /* var addr = server.address();
   * *
   */
-  var addr = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+  var addr = server.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
@@ -108,9 +109,10 @@ function onListening() {
 
 
 
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
+/*var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
 var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 
 server.listen(server_port,server_ip_address, function() {
     console.log( "Listening on " + server_ip_address +",port" + server_port )
 });
+*/
